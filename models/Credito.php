@@ -27,9 +27,18 @@
             $sql->bindValue(7, $N_cuotas);
             $sql->bindValue(8, $Email);
             $sql->execute();
-
-          
-           return $resultado=$sql->fetchAll(PDO::FETCH_ASSOC);
+            $Id_credito=$conectar->lastInsertId();
+            $resultado=array(
+           "Id credito"=>$Id_credito,
+           "Id cliente"=>$Id_cliente,
+           "Monto" =>$Monto,
+           "Porcentaje" =>$Porcentaje,
+           "Fecha inicial" =>$Fecha_inicial,
+           "Fecha vencimeinto" =>$Fecha_venci,
+           "Modalidad" =>$Modalidad,
+           "Numero de cuotas" =>$N_cuotas,
+           "Email" =>$Email);
+            return $resultado;
         }
 
         public function read_credito(){
@@ -56,6 +65,14 @@
         public function update_credito($Id_credito,$Monto,$Porcentaje,$Fecha_inicial,$Fecha_venci,$Modalidad,$N_cuotas,$Email){
             $conectar= parent::conexion();
             parent::set_names();
+            $sql="SELECT * FROM creditos WHERE Id_credito = ?";
+            $sql=$conectar->prepare($sql);
+            $sql->bindValue(1, $Id_credito);
+            $sql->execute();
+            $resultado=$sql->fetchAll(PDO::FETCH_ASSOC);
+
+            $conectar= parent::conexion();
+            parent::set_names();
             $sql="UPDATE creditos set
                 
                 Monto = ?,
@@ -68,7 +85,7 @@
                 WHERE
                 Id_credito = ?";
             $sql=$conectar->prepare($sql);
-           
+        
             $sql->bindValue(1, $Monto);
             $sql->bindValue(2, $Porcentaje);
             $sql->bindValue(3, $Fecha_inicial);
@@ -79,17 +96,27 @@
             $sql->bindValue(8, $Id_credito); 
            
             $sql->execute();
-            return $resultado=$sql->fetchAll(PDO::FETCH_ASSOC);
+            return $resultado;
+
+          
         }
 
         public function delete_credito($Id_credito){
+            $conectar= parent::conexion();
+            parent::set_names();
+            $sql="SELECT * FROM creditos WHERE Id_credito = ?";
+            $sql=$conectar->prepare($sql);
+            $sql->bindValue(1, $Id_credito);
+            $sql->execute();
+            $resultado=$sql->fetchAll(PDO::FETCH_ASSOC);
+
             $conectar= parent::conexion();
             parent::set_names();
             $sql="DELETE  FROM creditos  WHERE Id_credito = ?";
             $sql=$conectar->prepare($sql);
             $sql->bindValue(1, $Id_credito);
             $sql->execute();
-            return $resultado=$sql->fetchAll(PDO::FETCH_ASSOC);
+            return $resultado;
         }
 
     }
