@@ -3,41 +3,38 @@
 
        
 
-        public function create_credito($Id_cliente,$Monto,$Porcentaje,$Fecha_inicial,$Fecha_venci,$Modalidad,$N_cuotas,$Email){
+        public function create_credito($Id_cliente,$Monto,$Entidad,$Fecha_inicial,$Fecha_final,$Modalidad,$Estado){
             $conectar= parent::conexion();
             parent::set_names();
             $sql="INSERT INTO creditos(
             Id_credito,
             Id_cliente,
             Monto,
-            Porcentaje,
+            Entidad,
             Fecha_inicial, 
-            Fecha_venci,
+            Fecha_final,
             Modalidad,
-            N_cuotas,
-            Email) VALUES (NULL,?,?,?,?,?,?,?,?);";
+            Estado) VALUES (NULL,?,?,?,?,?,?,?);";
             
             $sql=$conectar->prepare($sql);
             $sql->bindValue(1, $Id_cliente);
             $sql->bindValue(2, $Monto);
-            $sql->bindValue(3, $Porcentaje);
+            $sql->bindValue(3, $Entidad);
             $sql->bindValue(4, $Fecha_inicial);
-            $sql->bindValue(5, $Fecha_venci);
+            $sql->bindValue(5, $Fecha_final);
             $sql->bindValue(6, $Modalidad);
-            $sql->bindValue(7, $N_cuotas);
-            $sql->bindValue(8, $Email);
+            $sql->bindValue(7, $Estado);
             $sql->execute();
             $Id_credito=$conectar->lastInsertId();
             $resultado=array(
            "Id credito"=>$Id_credito,
            "Id cliente"=>$Id_cliente,
            "Monto" =>$Monto,
-           "Porcentaje" =>$Porcentaje,
+           "Entidad" =>$Entidad,
            "Fecha inicial" =>$Fecha_inicial,
-           "Fecha vencimeinto" =>$Fecha_venci,
+           "Fecha final" =>$Fecha_final,
            "Modalidad" =>$Modalidad,
-           "Numero de cuotas" =>$N_cuotas,
-           "Email" =>$Email);
+           "Estado" =>$Estado);
             return $resultado;
         }
 
@@ -62,7 +59,7 @@
 
        
 
-        public function update_credito($Id_credito,$Monto,$Porcentaje,$Fecha_inicial,$Fecha_venci,$Modalidad,$N_cuotas,$Email){
+        public function update_credito($Id_credito,$Monto,$Entidad,$Fecha_inicial,$Fecha_final,$Modalidad,$Estado){
             $conectar= parent::conexion();
             parent::set_names();
             $sql="SELECT * FROM creditos WHERE Id_credito = ?";
@@ -76,24 +73,22 @@
             $sql="UPDATE creditos set
                 
                 Monto = ?,
-                Porcentaje = ?,
+                Entidad = ?,
                 Fecha_inicial = ?,
-                Fecha_venci = ?,
+                Fecha_final = ?,
                 Modalidad = ?,
-                N_cuotas = ?,
-                Email = ?
+                Estado = ?
                 WHERE
                 Id_credito = ?";
             $sql=$conectar->prepare($sql);
         
             $sql->bindValue(1, $Monto);
-            $sql->bindValue(2, $Porcentaje);
+            $sql->bindValue(2, $Entidad);
             $sql->bindValue(3, $Fecha_inicial);
-            $sql->bindValue(4, $Fecha_venci);
+            $sql->bindValue(4, $Fecha_final);
             $sql->bindValue(5, $Modalidad);
-            $sql->bindValue(6, $N_cuotas);
-            $sql->bindValue(7, $Email);
-            $sql->bindValue(8, $Id_credito); 
+            $sql->bindValue(6, $Estado);
+            $sql->bindValue(7, $Id_credito); 
            
             $sql->execute();
             return $resultado;

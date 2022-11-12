@@ -10,7 +10,14 @@
     switch($_GET["op"]){
 
         case "Create":
-            $datos=$credito->create_credito($body["Id_cliente"],$body["Monto"],$body["Porcentaje"],$body["Fecha_inicial"],$body["Fecha_venci"],$body["Modalidad"],$body["N_cuotas"],$body["Email"]);
+            $datos=$credito->create_credito(
+                $body["Id_cliente"],
+                $body["Monto"],
+                $body["Entidad"],
+                $body["Fecha_inicial"],
+                $body["Fecha_final"],
+                $body["Modalidad"],
+                $body["Estado"]);
             echo json_encode("CREDITO CREADO CON EXITO");
             echo json_encode($datos);  
         break;
@@ -26,7 +33,14 @@
         break;
 
         case "Update":
-            $datos=$credito->update_credito($body["Id_credito"],$body["Monto"],$body["Porcentaje"],$body["Fecha_inicial"],$body["Fecha_venci"],$body["Modalidad"],$body["N_cuotas"],$body["Email"]);
+            $datos=$credito->update_credito(
+                $body["Id_credito"],
+                $body["Monto"],
+                $body["Entidad"],
+                $body["Fecha_inicial"],
+                $body["Fecha_final"],
+                $body["Modalidad"],
+                $body["Estado"]);
             echo json_encode("Update Correcto");
             echo json_encode($datos);
         break;
